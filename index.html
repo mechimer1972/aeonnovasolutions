@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aeon Nova Solutions — ERP/MRP para empresas productivas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0A0F1E; --panel:#0F1A3A; --panel2:#101B3E; --blue:#2563EB; --cyan:#22D3EE;
+  --white:#F8FAFC; --ink:#0A0F1E; --slate:#94A3B8; --slate-dark:#5B6B8C; --line:rgba(148,163,184,.18);
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px);}
+body{background:var(--navy); color:var(--white); font-family:'Inter',system-ui,sans-serif; line-height:1.5; overflow-x:hidden;}
+h1,h2,h3,.disp{font-family:'Space Grotesk',system-ui,sans-serif; letter-spacing:-0.01em;}
+.wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+a{color:inherit; text-decoration:none;}
+.eyebrow{color:var(--cyan); font-size:.85rem; font-weight:600;}
+
+/* NAV */
+nav{position:sticky; top:0; z-index:50; backdrop-filter:blur(10px); background:rgba(10,15,30,.75); border-bottom:1px solid var(--line);}
+nav .wrap{display:flex; align-items:center; justify-content:space-between; height:72px;}
+.logo{display:flex; align-items:center; gap:10px; font-size:1.05rem; font-weight:700; letter-spacing:-0.01em; white-space:nowrap;}
+.logo svg{width:26px; height:26px;}
+.navlinks{display:flex; gap:32px; font-size:.92rem; color:var(--slate);}
+.navlinks a:hover{color:var(--white);}
+.btn{display:inline-flex; align-items:center; justify-content:center; padding:12px 22px; border-radius:9px; font-weight:600; font-size:.92rem; transition:transform .15s ease, box-shadow .2s ease;}
+.btn-primary{background:linear-gradient(135deg,var(--blue),var(--cyan)); color:#fff; box-shadow:0 0 0 rgba(34,211,238,0);}
+.btn-primary:hover{transform:translateY(-1px); box-shadow:0 8px 24px rgba(34,211,238,.25);}
+.btn-ghost{border:1px solid var(--line); color:var(--white);}
+.btn-ghost:hover{border-color:var(--cyan);}
+@media(max-width:820px){.navlinks{display:none;}}
+
+/* HERO */
+.hero{padding:96px 0 70px; position:relative; overflow:hidden; background:radial-gradient(ellipse 80% 60% at 30% 20%, rgba(124,58,237,.22), transparent 65%), radial-gradient(ellipse 60% 50% at 85% 75%, rgba(34,211,238,.10), transparent 70%);}
+#starfield{position:absolute; inset:0; width:100%; height:100%; z-index:0; pointer-events:none;}
+.hero .wrap{position:relative; z-index:1; display:grid; grid-template-columns:1.1fr 1fr; gap:48px; align-items:center;}
+.hero h1{font-size:clamp(2.1rem,4vw,3.3rem); font-weight:700; line-height:1.12;}
+.hero p.lead{margin-top:20px; color:var(--slate); font-size:1.1rem; max-width:480px;}
+.hero .ctas{margin-top:32px; display:flex; gap:14px; flex-wrap:wrap;}
+
+/* Flow diagram (hero) */
+.flowbox{position:relative; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:28px; min-height:380px;}
+.flow-node{display:flex; align-items:center; gap:12px; padding:12px 14px; border-radius:9px; background:var(--panel2); border:1px solid var(--line); font-size:.85rem; font-weight:600; opacity:0; transform:translateY(8px); animation:nodeIn .5s ease forwards;}
+.flow-node .dot{width:9px; height:9px; border-radius:50%; background:var(--cyan); flex-shrink:0; box-shadow:0 0 8px var(--cyan);}
+.flow-node:nth-child(1){animation-delay:.1s} .flow-node:nth-child(2){animation-delay:.4s}
+.flow-node:nth-child(3){animation-delay:.7s} .flow-node:nth-child(4){animation-delay:1.0s}
+.flow-node:nth-child(5){animation-delay:1.3s} .flow-node:nth-child(6){animation-delay:1.6s}
+.flow-node:nth-child(7){animation-delay:1.9s}
+.flow-node + .flow-node{margin-top:8px;}
+.flowline{position:absolute; left:22px; top:44px; width:2px; background:linear-gradient(to bottom,var(--cyan),transparent); height:0; animation:lineGrow 2.2s ease forwards; animation-delay:.1s;}
+@keyframes nodeIn{to{opacity:1; transform:translateY(0);}}
+@keyframes lineGrow{to{height:290px;}}
+@media(prefers-reduced-motion:reduce){.flow-node{animation:none; opacity:1;} .flowline{animation:none;}}
+@media(max-width:900px){.hero .wrap{grid-template-columns:1fr;}}
+
+/* Section basics */
+section{padding:88px 0;}
+.section-light{background:var(--white); color:var(--ink);}
+.section-light .slate{color:var(--slate-dark);}
+h2.h2{font-size:clamp(1.7rem,3vw,2.4rem); font-weight:700; max-width:680px;}
+.sub{color:var(--slate); margin-top:14px; max-width:560px; font-size:1.05rem;}
+.section-light .sub{color:var(--slate-dark);}
+
+/* Problem list */
+.problem-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:44px;}
+.problem-item{display:flex; gap:12px; padding:16px 0; border-bottom:1px solid var(--line); font-size:.95rem; color:var(--slate);}
+.problem-item .x{color:#F87171; font-weight:700; flex-shrink:0;}
+.connect-line{margin-top:56px; text-align:center;}
+.connect-line .pill{display:inline-block; padding:10px 22px; border-radius:24px; background:linear-gradient(135deg,var(--blue),var(--cyan)); font-weight:600; font-size:.95rem;}
+@media(max-width:700px){.problem-grid{grid-template-columns:1fr;}}
+
+/* How it works timeline */
+.timeline{margin-top:52px; position:relative; padding-left:28px; border-left:2px solid var(--line);}
+.tl-step{position:relative; padding:0 0 40px 24px;}
+.tl-step:last-child{padding-bottom:0;}
+.tl-step::before{content:''; position:absolute; left:-33px; top:2px; width:12px; height:12px; border-radius:50%; background:var(--cyan); box-shadow:0 0 0 4px var(--navy);}
+.tl-step h3{font-size:1.1rem; font-weight:600;}
+.tl-step p{color:var(--slate); margin-top:6px; font-size:.95rem; max-width:520px;}
+
+/* Modules */
+.mod-grid{margin-top:48px; display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:14px; overflow:hidden;}
+.mod-card{background:var(--panel); padding:26px; position:relative;}
+.mod-card h3{font-size:1.05rem; font-weight:600; display:flex; align-items:center; gap:8px; color:var(--white);}
+.mod-card h3 .dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);}
+.mod-card ul{margin-top:14px; padding-left:0; list-style:none; color:var(--slate); font-size:.88rem;}
+.mod-card li{padding:5px 0; border-top:1px dashed var(--line);}
+.mod-card li:first-child{border-top:none;}
+@media(max-width:900px){.mod-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:600px){.mod-grid{grid-template-columns:1fr;}}
+
+/* Differential */
+.diff-top{display:grid; grid-template-columns:1.1fr 380px; gap:40px; align-items:center;}
+.ai-visual{background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:18px;}
+.ai-visual svg{width:100%; height:auto; display:block;}
+.diff-grid{margin-top:48px; display:grid; grid-template-columns:repeat(2,1fr); gap:28px;}
+@media(max-width:900px){.diff-top{grid-template-columns:1fr;} .ai-visual{max-width:380px; margin:0 auto;}}
+.diff-item h3{font-size:1.05rem; font-weight:600; color:var(--ink);}
+.diff-item .num{color:var(--blue); font-family:'Space Grotesk'; font-weight:700; font-size:1.4rem;}
+.diff-item p{color:var(--slate-dark); margin-top:8px; font-size:.93rem;}
+@media(max-width:700px){.diff-grid{grid-template-columns:1fr;}}
+
+/* Dashboard mock */
+.dash{margin-top:48px; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:22px; overflow:hidden;}
+.dash-top{display:flex; gap:8px; margin-bottom:18px;}
+.dash-top span{width:10px; height:10px; border-radius:50%; background:var(--slate-dark); opacity:.5;}
+.kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px;}
+.kpi{background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:14px;}
+.kpi .lbl{font-size:.75rem; color:var(--slate);}
+.kpi .val{font-family:'Space Grotesk'; font-size:1.35rem; font-weight:700; margin-top:4px;}
+.kpi .delta{font-size:.75rem; color:var(--cyan); margin-top:2px;}
+.chart-row{display:grid; grid-template-columns:1.4fr 1fr; gap:14px; margin-top:14px;}
+.chart-box{background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:16px; height:170px; display:flex; align-items:flex-end; gap:6px;}
+.bar{flex:1; background:linear-gradient(to top,var(--blue),var(--cyan)); border-radius:4px 4px 0 0; opacity:.85;}
+.alert-box{background:var(--panel2); border:1px solid var(--line); border-radius:10px; padding:16px; font-size:.85rem; color:var(--slate);}
+.alert-box .row{display:flex; justify-content:space-between; padding:8px 0; border-top:1px dashed var(--line);}
+.alert-box .row:first-child{border-top:none;}
+@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr);} .chart-row{grid-template-columns:1fr;}}
+
+/* Traceability */
+.trace-flow{margin-top:48px; display:flex; flex-wrap:wrap; align-items:center; gap:0; justify-content:center;}
+.trace-node{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:12px 16px; font-size:.85rem; font-weight:600; white-space:nowrap; color:var(--white);}
+.trace-arrow{color:var(--blue); padding:0 10px; font-size:1.1rem;}
+.trace-examples{margin-top:36px; display:grid; grid-template-columns:1fr 1fr; gap:20px;}
+.trace-ex{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px;}
+.trace-ex h4{font-size:.95rem; font-weight:600; color:var(--cyan);}
+.trace-ex p{margin-top:8px; color:var(--slate); font-size:.88rem;}
+@media(max-width:700px){.trace-examples{grid-template-columns:1fr;}}
+
+/* Industries */
+.ind-grid{margin-top:44px; display:grid; grid-template-columns:repeat(4,1fr); gap:14px;}
+.ind-card{background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:20px; text-align:left; transition:border-color .2s;}
+.ind-card:hover{border-color:var(--cyan);}
+.ind-card .ic{width:34px; height:34px; color:var(--cyan);}
+.ind-card .ic svg{width:100%; height:100%; fill:none; stroke:currentColor; stroke-width:1.5; stroke-linecap:round; stroke-linejoin:round;}
+.ind-card .name{margin-top:10px; font-weight:600; font-size:.92rem;}
+@media(max-width:900px){.ind-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* Benefits */
+.benefit-grid{margin-top:44px; display:grid; grid-template-columns:repeat(4,1fr); gap:24px;}
+.benefit{padding:18px 0; border-top:2px solid var(--ink);}
+.benefit h3{font-size:.98rem; font-weight:600;}
+@media(max-width:900px){.benefit-grid{grid-template-columns:repeat(2,1fr);}}
+
+/* CTA final */
+.cta-final{background:linear-gradient(135deg,#0F1A3A,#0A0F1E); text-align:center; border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+.cta-final h2{font-size:clamp(1.8rem,3.5vw,2.6rem);}
+.cta-final .sub{margin:16px auto 0;}
+.cta-final .ctas{margin-top:32px; display:flex; justify-content:center;}
+
+/* Form */
+.contact-direct{display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin-top:22px; font-size:.92rem;}
+.contact-direct a{color:var(--cyan); font-weight:600; transition:opacity .15s;}
+.contact-direct a:hover{opacity:.75;}
+.form-wrap{max-width:640px; margin:48px auto 0; background:var(--panel); border:1px solid var(--line); border-radius:16px; padding:32px;}
+.form-grid{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+.field{display:flex; flex-direction:column; gap:6px;}
+.field.full{grid-column:1/-1;}
+.field label{font-size:.8rem; color:var(--slate);}
+.field input, .field select, .field textarea{background:var(--panel2); border:1px solid var(--line); border-radius:8px; padding:11px 12px; color:var(--white); font-family:inherit; font-size:.92rem;}
+.field input:focus, .field select:focus, .field textarea:focus{outline:2px solid var(--cyan); outline-offset:1px;}
+.form-wrap .btn-primary{margin-top:18px; width:100%;}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr;}}
+
+/* Footer */
+footer{padding:56px 0 40px; border-top:1px solid var(--line);}
+.foot-grid{display:flex; justify-content:space-between; flex-wrap:wrap; gap:32px;}
+.foot-links{display:flex; gap:28px; flex-wrap:wrap; font-size:.88rem; color:var(--slate);}
+.foot-bottom{margin-top:36px; padding-top:20px; border-top:1px solid var(--line); font-size:.8rem; color:var(--slate-dark);}
+
+/* reveal on scroll */
+.reveal{opacity:0; transform:translateY(14px); transition:opacity .5s ease, transform .5s ease;}
+.reveal.in{opacity:1; transform:translateY(0);}
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1; transform:none; transition:none;}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo">
+      <svg viewBox="0 0 26 26" fill="none"><circle cx="6" cy="20" r="3" fill="#22D3EE"/><circle cx="20" cy="6" r="3" fill="#2563EB"/><path d="M6 20 L20 6" stroke="#22D3EE" stroke-width="2"/><circle cx="13" cy="13" r="2" fill="#F8FAFC"/></svg>
+      AEON NOVA SOLUTIONS
+    </div>
+    <div class="navlinks">
+      <a href="#modulos">Producto</a>
+      <a href="#trazabilidad">Trazabilidad</a>
+      <a href="#industrias">Industrias</a>
+      <a href="#contacto">Contacto</a>
+    </div>
+    <a href="#contacto" class="btn btn-primary">Contactar</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <canvas id="starfield"></canvas>
+  <div class="wrap">
+    <div>
+      <div class="eyebrow">ERP / MRP para empresas productivas</div>
+      <h1 style="margin-top:14px;">De la materia prima al producto terminado, todo conectado.</h1>
+      <p class="lead">Aeon Nova Solutions automatiza compras, costos, producción, stock, ventas y trazabilidad para empresas que elaboran productos.</p>
+      <div class="ctas">
+        <a href="#contacto" class="btn btn-primary">Contactar</a>
+        <a href="#como-funciona" class="btn btn-ghost">Conocer Aeon Nova Solutions</a>
+      </div>
+    </div>
+    <div class="flowbox">
+      <div class="flowline"></div>
+      <div class="flow-node"><span class="dot"></span>Compra de materia prima</div>
+      <div class="flow-node"><span class="dot"></span>Actualización de costo</div>
+      <div class="flow-node"><span class="dot"></span>Receta actualizada</div>
+      <div class="flow-node"><span class="dot"></span>Orden de producción</div>
+      <div class="flow-node"><span class="dot"></span>Stock de elaborados</div>
+      <div class="flow-node"><span class="dot"></span>Venta registrada</div>
+      <div class="flow-node"><span class="dot"></span>Trazabilidad completa</div>
+    </div>
+  </div>
+</section>
+
+<section class="section-light">
+  <div class="wrap reveal">
+    <h2 class="h2">Cuando la información está separada, la gestión se complica.</h2>
+    <div class="problem-grid">
+      <div class="problem-item"><span class="x">✕</span>Excel para controlar materias primas</div>
+      <div class="problem-item"><span class="x">✕</span>Sistemas separados para compras y producción</div>
+      <div class="problem-item"><span class="x">✕</span>Costos desactualizados</div>
+      <div class="problem-item"><span class="x">✕</span>Stock que no refleja la producción real</div>
+      <div class="problem-item"><span class="x">✕</span>Recetas difíciles de mantener</div>
+      <div class="problem-item"><span class="x">✕</span>Falta de trazabilidad</div>
+      <div class="problem-item"><span class="x">✕</span>Información duplicada y carga administrativa</div>
+      <div class="problem-item"><span class="x">✕</span>Costo real de cada producto difícil de conocer</div>
+    </div>
+    <div class="connect-line"><span class="pill">Aeon Nova Solutions conecta todo.</span></div>
+  </div>
+</section>
+
+<section id="como-funciona">
+  <div class="wrap reveal">
+    <h2 class="h2">Cómo funciona</h2>
+    <p class="sub">Un circuito continuo: cada etapa alimenta automáticamente a la siguiente.</p>
+    <div class="timeline">
+      <div class="tl-step"><h3>Comprás</h3><p>Emití órdenes de compra y registrá el ingreso de materias primas.</p></div>
+      <div class="tl-step"><h3>Actualizás costos</h3><p>Aeon Nova Solutions actualiza automáticamente los costos de las materias primas y su impacto en las recetas.</p></div>
+      <div class="tl-step"><h3>Producís</h3><p>Utilizá recetas y fórmulas para registrar la elaboración.</p></div>
+      <div class="tl-step"><h3>Controlás el stock</h3><p>El sistema descuenta las materias primas utilizadas y genera el stock de productos elaborados.</p></div>
+      <div class="tl-step"><h3>Costeás</h3><p>Conocé el costo actualizado de tus productos y de tu stock.</p></div>
+      <div class="tl-step"><h3>Vendés</h3><p>Registrá las operaciones comerciales y mantené actualizado el stock.</p></div>
+      <div class="tl-step"><h3>Trazás</h3><p>Seguí el recorrido de las materias primas y productos elaborados punta a punta.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="modulos" class="section-light">
+  <div class="wrap reveal">
+    <h2 class="h2">Módulos</h2>
+    <p class="sub">Cada módulo comparte la misma información: nada se ingresa dos veces.</p>
+    <div class="mod-grid">
+      <div class="mod-card"><h3><span class="dot"></span>Compras</h3><ul><li>Órdenes de compra</li><li>Ingreso de mercadería</li><li>Control de proveedores</li><li>Subdiario de compras</li><li>Actualización automática de costos</li></ul></div>
+      <div class="mod-card"><h3><span class="dot"></span>Materias primas</h3><ul><li>Base de datos</li><li>Costos</li><li>Stock</li><li>Historial de compras</li><li>Trazabilidad</li></ul></div>
+      <div class="mod-card"><h3><span class="dot"></span>Recetas y fórmulas</h3><ul><li>Recetas costeadas</li><li>Materias primas utilizadas</li><li>Rendimientos</li><li>Costos actualizados</li><li>Versionado de recetas</li></ul></div>
+      <div class="mod-card"><h3><span class="dot"></span>Producción</h3><ul><li>Órdenes de elaboración</li><li>Consumo de materias primas</li><li>Generación de elaborados</li><li>Actualización de stock</li></ul></div>
+      <div class="mod-card"><h3><span class="dot"></span>Stock</h3><ul><li>Materias primas</li><li>Productos elaborados</li><li>Movimientos</li><li>Valorización de stock</li></ul></div>
+      <div class="mod-card"><h3><span class="dot"></span>Ventas</h3><ul><li>Operaciones de venta</li><li>Subdiario de ventas</li><li>Salidas de stock</li><li>Trazabilidad</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap reveal">
+    <div class="diff-top">
+      <div>
+        <h2 class="h2">No es solamente un ERP. Es el sistema operativo de tu producción.</h2>
+        <p class="sub">Diseñado específicamente para empresas que transforman materias primas en productos.</p>
+      </div>
+      <div class="ai-visual">
+        <svg viewBox="0 0 360 300" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="nodeGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#22D3EE"/>
+            </linearGradient>
+          </defs>
+          <!-- AI network, top -->
+          <circle cx="180" cy="55" r="16" fill="none" stroke="url(#nodeGrad)" stroke-width="2"/>
+          <circle cx="180" cy="55" r="5" fill="#A78BFA"/>
+          <circle cx="110" cy="95" r="6" fill="#22D3EE"/>
+          <circle cx="250" cy="95" r="6" fill="#22D3EE"/>
+          <circle cx="60" cy="60" r="4" fill="#7C3AED"/>
+          <circle cx="300" cy="60" r="4" fill="#7C3AED"/>
+          <g stroke="#5B6B8C" stroke-width="1" opacity=".6">
+            <line x1="180" y1="55" x2="110" y2="95"/>
+            <line x1="180" y1="55" x2="250" y2="95"/>
+            <line x1="180" y1="55" x2="60" y2="60"/>
+            <line x1="180" y1="55" x2="300" y2="60"/>
+            <line x1="110" y1="95" x2="60" y2="60"/>
+            <line x1="250" y1="95" x2="300" y2="60"/>
+          </g>
+          <!-- shelves / stock boxes, bottom -->
+          <g>
+            <rect x="35" y="170" width="70" height="52" rx="6" fill="#101B3E" stroke="#22D3EE" stroke-width="1.4"/>
+            <rect x="145" y="170" width="70" height="52" rx="6" fill="#101B3E" stroke="#2563EB" stroke-width="1.4"/>
+            <rect x="255" y="170" width="70" height="52" rx="6" fill="#101B3E" stroke="#A78BFA" stroke-width="1.4"/>
+            <rect x="35" y="230" width="70" height="40" rx="6" fill="#101B3E" stroke="#5B6B8C" stroke-width="1"/>
+            <rect x="145" y="230" width="70" height="40" rx="6" fill="#101B3E" stroke="#5B6B8C" stroke-width="1"/>
+            <rect x="255" y="230" width="70" height="40" rx="6" fill="#101B3E" stroke="#5B6B8C" stroke-width="1"/>
+          </g>
+          <!-- automation link lines from AI to boxes -->
+          <path id="p1" d="M180,70 C150,110 100,140 70,168" fill="none" stroke="#22D3EE" stroke-width="1.2" stroke-dasharray="3 5" opacity=".7"/>
+          <path id="p2" d="M180,70 C180,110 180,140 180,168" fill="none" stroke="#2563EB" stroke-width="1.2" stroke-dasharray="3 5" opacity=".7"/>
+          <path id="p3" d="M180,70 C210,110 260,140 290,168" fill="none" stroke="#A78BFA" stroke-width="1.2" stroke-dasharray="3 5" opacity=".7"/>
+          <circle r="3.2" fill="#22D3EE"><animateMotion dur="3.2s" repeatCount="indefinite" begin="0s"><mpath href="#p1"/></animateMotion></circle>
+          <circle r="3.2" fill="#67A8FF"><animateMotion dur="3.2s" repeatCount="indefinite" begin="1.05s"><mpath href="#p2"/></animateMotion></circle>
+          <circle r="3.2" fill="#C4B5FD"><animateMotion dur="3.2s" repeatCount="indefinite" begin="2.1s"><mpath href="#p3"/></animateMotion></circle>
+        </svg>
+      </div>
+    </div>
+    <div class="diff-grid" style="margin-top:40px;">
+      <div class="diff-item" style="color:var(--white)"><div class="num" style="color:var(--cyan)">01</div><h3 style="color:var(--white)">Información conectada</h3><p style="color:var(--slate)">La información ingresada una vez impacta automáticamente en las áreas relacionadas.</p></div>
+      <div class="diff-item" style="color:var(--white)"><div class="num" style="color:var(--cyan)">02</div><h3 style="color:var(--white)">Costos actualizados</h3><p style="color:var(--slate)">Las compras modifican el costo de las materias primas y actualizan recetas y productos.</p></div>
+      <div class="diff-item" style="color:var(--white)"><div class="num" style="color:var(--cyan)">03</div><h3 style="color:var(--white)">Producción integrada</h3><p style="color:var(--slate)">La elaboración actualiza automáticamente consumos y stock.</p></div>
+      <div class="diff-item" style="color:var(--white)"><div class="num" style="color:var(--cyan)">04</div><h3 style="color:var(--white)">Trazabilidad punta a punta</h3><p style="color:var(--slate)">Conocé el origen de una materia prima y dónde terminó siendo utilizada.</p></div>
+    </div>
+    <div class="dash reveal">
+      <div class="dash-top"><span></span><span></span><span></span></div>
+      <div class="kpi-row">
+        <div class="kpi"><div class="lbl">Stock materias primas</div><div class="val">$4.82M</div><div class="delta">+2.1% vs. período anterior</div></div>
+        <div class="kpi"><div class="lbl">Stock elaborados</div><div class="val">$3.14M</div><div class="delta">+5.4%</div></div>
+        <div class="kpi"><div class="lbl">Producción del período</div><div class="val">18.230 kg</div><div class="delta">+8.7%</div></div>
+        <div class="kpi"><div class="lbl">Ventas del período</div><div class="val">$9.06M</div><div class="delta">+3.9%</div></div>
+      </div>
+      <div class="chart-row">
+        <div class="chart-box">
+          <div class="bar" style="height:40%"></div><div class="bar" style="height:55%"></div><div class="bar" style="height:48%"></div>
+          <div class="bar" style="height:70%"></div><div class="bar" style="height:62%"></div><div class="bar" style="height:80%"></div>
+          <div class="bar" style="height:74%"></div><div class="bar" style="height:90%"></div>
+        </div>
+        <div class="alert-box">
+          <div class="row"><span>Harina 000</span><span style="color:#F87171">Stock bajo</span></div>
+          <div class="row"><span>Aceite girasol</span><span style="color:#FBBF24">Por vencer</span></div>
+          <div class="row"><span>Envases 500ml</span><span style="color:var(--cyan)">OK</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="trazabilidad" class="section-light">
+  <div class="wrap reveal">
+    <h2 class="h2">Sabé exactamente de dónde viene cada producto.</h2>
+    <p class="sub">Recorré el proceso hacia atrás y hacia adelante, punta a punta.</p>
+    <div class="trace-flow">
+      <div class="trace-node">Proveedor</div><span class="trace-arrow">→</span>
+      <div class="trace-node">Orden de compra</div><span class="trace-arrow">→</span>
+      <div class="trace-node">Lote</div><span class="trace-arrow">→</span>
+      <div class="trace-node">Receta</div><span class="trace-arrow">→</span>
+      <div class="trace-node">Elaboración</div><span class="trace-arrow">→</span>
+      <div class="trace-node">Producto terminado</div><span class="trace-arrow">→</span>
+      <div class="trace-node">Venta</div>
+    </div>
+    <div class="trace-examples">
+      <div class="trace-ex"><h4>¿De dónde salió este producto?</h4><p>Producto terminado → elaboración → materia prima → proveedor.</p></div>
+      <div class="trace-ex"><h4>¿Dónde se utilizó esta materia prima?</h4><p>Materia prima → elaboraciones → productos terminados → ventas.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="industrias">
+  <div class="wrap reveal">
+    <h2 class="h2">Si tu empresa transforma materias primas en productos, Aeon Nova Solutions fue pensado para vos.</h2>
+    <div class="ind-grid">
+      <div class="ind-card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M7 3v4M17 3v4M4 9h16M5 9v9a3 3 0 0 0 3 3h8a3 3 0 0 0 3-3V9"/></svg></div><div class="name">Alimenticias</div></div>
+      <div class="ind-card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M10 2h4M11 2v5l-3.5 4A4 4 0 0 0 6 14v6a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-6a4 4 0 0 0-1.5-3.1L13 7V2"/></svg></div><div class="name">Bebidas</div></div>
+      <div class="ind-card"><div class="ic"><svg viewBox="0 0 24 24"><rect x="7" y="8" width="10" height="13" rx="2"/><path d="M9 8V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3M10 13h4"/></svg></div><div class="name">Cosmética</div></div>
+      <div class="ind-card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 2h6M10 2v6.5L4.8 18a2 2 0 0 0 1.7 3h11a2 2 0 0 0 1.7-3L14 8.5V2M8 15h8"/></svg></div><div class="name">Química</div></div>
+      <div class="ind-card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 21V11l6 4v-4l6 4V6l3 3v12H3Z"/><path d="M7 21v-4M12 21v-4M17 21v-4"/></svg></div><div class="name">Manufactura</div></div>
+      <div class="ind-card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 13c0-4 3-8 8-9 5 1 8 5 8 9 0 4-4 7-8 7s-8-3-8-7Z"/><path d="M12 4v16M8 9c1.5 1 5 1 6.5 0M7.5 15c1.8 1.2 6.4 1.2 8.2 0"/></svg></div><div class="name">Panificados</div></div>
+      <div class="ind-card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M9 3h3v3H9zM9.5 6h4l1.5 3v11a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1V9l1.5-3Z"/><path d="M4 8v1M6 6.5v1M4 12v1"/></svg></div><div class="name">Productos de limpieza</div></div>
+      <div class="ind-card"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v10l8 4 8-4V7l-8-4Z"/><path d="M4 7l8 4 8-4M12 11v10"/></svg></div><div class="name">Otras industrias elaboradoras</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section-light">
+  <div class="wrap reveal">
+    <h2 class="h2">Conectá compras, producción, stock, costos y ventas en un solo sistema.</h2>
+    <div class="benefit-grid">
+      <div class="benefit"><h3>Mayor control</h3></div>
+      <div class="benefit"><h3>Menos tareas manuales</h3></div>
+      <div class="benefit"><h3>Información centralizada</h3></div>
+      <div class="benefit"><h3>Costos actualizados</h3></div>
+      <div class="benefit"><h3>Stock confiable</h3></div>
+      <div class="benefit"><h3>Trazabilidad completa</h3></div>
+      <div class="benefit"><h3>Mejor control de producción</h3></div>
+      <div class="benefit"><h3>Mayor visibilidad del negocio</h3></div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto" class="cta-final">
+  <div class="wrap reveal">
+    <h2>¿Querés conocer Aeon Nova Solutions en acción?</h2>
+    <p class="sub" style="margin-left:auto;margin-right:auto;">Descubrí cómo automatizar la gestión de compras, producción, stock, costos y ventas de tu empresa.</p>
+    <div class="contact-direct">
+      <a href="mailto:aeon.novasolutions@gmail.com">✉ aeon.novasolutions@gmail.com</a>
+      <a href="https://wa.me/5491124109754" target="_blank" rel="noopener">📱 WhatsApp +54 9 11 2410 9754</a>
+    </div>
+    <div class="form-wrap" style="text-align:left;">
+      <form onsubmit="event.preventDefault(); this.querySelector('.btn-primary').textContent='Solicitud enviada ✓';">
+        <div class="form-grid">
+          <div class="field"><label for="nm">Nombre</label><input id="nm" required></div>
+          <div class="field"><label for="em">Empresa</label><input id="em" required></div>
+          <div class="field"><label for="mail">Email</label><input id="mail" type="email" required></div>
+          <div class="field"><label for="ph">Teléfono</label><input id="ph" type="tel"></div>
+          <div class="field"><label for="ind">Industria</label>
+            <select id="ind"><option>Alimenticias</option><option>Bebidas</option><option>Cosmética</option><option>Química</option><option>Manufactura</option><option>Panificados</option><option>Productos de limpieza</option><option>Otra</option></select>
+          </div>
+          <div class="field"><label for="usr">Cantidad aproximada de usuarios</label>
+            <select id="usr"><option>1-5</option><option>6-15</option><option>16-50</option><option>Más de 50</option></select>
+          </div>
+          <div class="field full"><label for="msg">Mensaje</label><textarea id="msg" rows="3"></textarea></div>
+        </div>
+        <button type="submit" class="btn btn-primary">Contactar</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <div class="logo" style="font-size:1.1rem;">AEON NOVA SOLUTIONS</div>
+        <p style="color:var(--slate); font-size:.88rem; margin-top:8px; max-width:260px;">ERP/MRP para empresas productivas.</p>
+        <div style="margin-top:14px; display:flex; flex-direction:column; gap:4px; font-size:.85rem;">
+          <a href="mailto:aeon.novasolutions@gmail.com" style="color:var(--slate);">aeon.novasolutions@gmail.com</a>
+          <a href="https://wa.me/5491124109754" target="_blank" rel="noopener" style="color:var(--slate);">WhatsApp +54 9 11 2410 9754</a>
+        </div>
+      </div>
+      <div class="foot-links">
+        <a href="#modulos">Producto</a>
+        <a href="#modulos">Módulos</a>
+        <a href="#trazabilidad">Trazabilidad</a>
+        <a href="#industrias">Industrias</a>
+        <a href="#contacto">Contactar</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+    </div>
+    <div class="foot-bottom">© 2026 Aeon Nova Solutions. Todos los derechos reservados.</div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const canvas = document.getElementById('starfield');
+  const ctx = canvas.getContext('2d');
+  const hero = document.querySelector('.hero');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let w, h, stars = [], drifts = [], dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+  function resize(){
+    w = hero.offsetWidth; h = hero.offsetHeight;
+    canvas.width = w * dpr; canvas.height = h * dpr;
+    canvas.style.width = w + 'px'; canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    build();
+  }
+
+  function build(){
+    const count = Math.round((w * h) / 9000);
+    stars = Array.from({length: count}, () => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.3 + 0.3,
+      hue: 255 + Math.random() * 45,
+      base: Math.random() * 0.5 + 0.25,
+      phase: Math.random() * Math.PI * 2,
+      speed: Math.random() * 0.004 + 0.002,
+      drift: (Math.random() - 0.5) * 0.06
+    }));
+    drifts = Array.from({length: 3}, () => ({
+      x: Math.random() * w, y: Math.random() * h,
+      r: Math.random() * 140 + 90,
+      hue: 265 + Math.random() * 30,
+      vx: (Math.random() - 0.5) * 0.08,
+      vy: (Math.random() - 0.5) * 0.05
+    }));
+  }
+
+  function frame(t){
+    ctx.clearRect(0, 0, w, h);
+    drifts.forEach(d => {
+      d.x += d.vx; d.y += d.vy;
+      if(d.x < -d.r) d.x = w + d.r; if(d.x > w + d.r) d.x = -d.r;
+      if(d.y < -d.r) d.y = h + d.r; if(d.y > h + d.r) d.y = -d.r;
+      const g = ctx.createRadialGradient(d.x, d.y, 0, d.x, d.y, d.r);
+      g.addColorStop(0, `hsla(${d.hue},85%,65%,0.10)`);
+      g.addColorStop(1, 'hsla(270,85%,65%,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+    });
+    stars.forEach(s => {
+      s.x += s.drift;
+      if(s.x < -2) s.x = w + 2; if(s.x > w + 2) s.x = -2;
+      const alpha = s.base + Math.sin(t * s.speed + s.phase) * 0.35;
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `hsla(${s.hue},90%,80%,${Math.max(alpha,0.08)})`;
+      ctx.fill();
+    });
+    if(!reduced) requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  if(reduced){ frame(0); } else { requestAnimationFrame(frame); }
+})();
+
+const els = document.querySelectorAll('.reveal');
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+},{threshold:.15});
+els.forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
